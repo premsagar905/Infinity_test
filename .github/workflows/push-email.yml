@@ -1,0 +1,29 @@
+name: Send Push Notification Email
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Send email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.your-company.com
+          server_port: 587
+          username: your-smtp-username
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "New Push to Master"
+          body: |
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref }}
+            Pusher: ${{ github.actor }}
+            Commit: ${{ github.sha }}
+          to: prem.sagar@infinitylabs.in
+          from: prem.sagar@infinitylabs.in
